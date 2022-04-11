@@ -11,7 +11,7 @@
   
   <title>
     
-      archive_a: 2022/4 
+      DNS域名查询 
       
       
       |
@@ -109,33 +109,158 @@
 
 
       <div class="flex-container">
-        <!-- 归档页，展示本站所有文章，按照年份降序归类，url形式：https://yoursite/archives/ -->
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
 
-<!-- last: 按年份把文章分组，当前遍历到的年份 -->
-<!-- now: 当前遍历到的文章的发布年份 -->
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+  };
+</script>
 
-<div class="container archives">
-  <div class="post-list">
+
+
     
-        <!-- 后续文章的发布年份呈现 -->
-        <div class="content-title">
-          <h2>
-            <span>2022</span>
-          </h2>
-        </div>
-      
-      <div class="post-item" title="DNS域名查询">
-        <div class="time-m-d">04-10</div>
-        <div class="title">
-          <a href="/2022/04/10/DNS%E5%9F%9F%E5%90%8D%E6%9F%A5%E8%AF%A2/">
-            <span>DNS域名查询</span>
-          </a>
-        </div>
-      </div>
-    
+
+        
+
+            
+
+                
+                  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+                  <div class="container post-details" id="post-details">
+                    <div class="post-content">
+                      <div class="post-title">
+                        DNS域名查询
+                      </div>
+                      <div class="post-attach">
+                        <span class="post-pubtime">
+                          <i class="iconfont icon-updatetime" title="更新时间"></i>
+                          2022-04-10 19:54:17
+                        </span>
+                        
+                          <span class="post-tags">
+                            <i class="iconfont icon-tags" title="标签"></i>
+                            
+                              <span class="span--tag">
+                                <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" title="计算机网络">
+                                  <b>#</b>
+                                  计算机网络
+                                </a>
+                              </span>
+                              
+                          </span>
+                          
+                      </div>
+                      <div class="markdown-body">
+                        <h3 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h3><p>​ 概述：IP 地址是面向主机的，而域名则是面向用户的，DNS 就是将域名映射为 IP 地址，这种对应关系在本地 hosts 文件中。</p>
+<p>域名到 IP 地址的解析过程的要点如下：</p>
+<ol>
+<li><p>当某个应用需要把主机名解析为 IP 地址时，该应用进程调用解析程序，并称为 DNS 的一个客户(浏览器也算做一个客户)，把待解析的域名放在 DNS 请求报文中，以 UDP 用户数据报方式发给<strong>本地域名服务器</strong>。</p>
+<blockquote>
+<p>在通过浏览器缓存及 host 文件都无法解析域名的情况下，OS 会将这个域名发送给<strong>计算机网络配置中 DNS 对应的地址（LDNS）</strong>，即本地区的域名服务器。这个 DNS 通常都提供给你本地互联网接入的一个 DNS 解析服务，假如是在学校接入的互联网，那么这个本地区的域名服务器基本上是在学校中；如果是在小区接入的互联网，那么这个本地区的域名服务器就是提供给你接入互联网的应用服务上，也就是电信或联通。</p>
+</blockquote>
+</li>
+<li><p>本地域名服务器在查找域名后，把对应的 IP 地址放在回答报文中返回(通过缓存或本地存储)。应用程序获得目的主机的 IP 地址后即可进行通信。</p>
+</li>
+<li><p>若本地域名服务器不能回答该请求，则此域名服务器就暂时称为 DNS 的另一个客户，并向其他域名服务器发出查询请求。</p>
+<p> <strong>从客户端到本地 DNS 服务器是属于递归查询，而 DNS 服务器之间的交互查询就是迭代查询</strong></p>
+</li>
+</ol>
+<p><img src="http://ckey.cc/2022/04/10/DNS%E5%9F%9F%E5%90%8D%E6%9F%A5%E8%AF%A2/DNS%E6%9F%A5%E8%AF%A2%E7%AE%80%E5%9B%BE.png"></p>
+<p>上图中 Step5 则又牵扯出了另外一个知识点——域名结构</p>
+<p>​ 由于因特网的用户数量较多，所以因特网在命名时采用的是<strong>层次树状结构</strong>的命名方法。任何一个连接在因特网上的主机或路由器，都有一个唯一的层次结构的名字，即域名(domain name)。这里，“域”(domain)是名字空间中一个可被管理的划分。</p>
+<p>​ <strong>级别最低的域名写在最左边，而级别最高的字符写在最右边</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//www.mail.cctv.com</span><br><span class="line"></span><br><span class="line">www  .mail  .cctv   .com</span><br><span class="line">协议 三级域名 二级域名 顶级域名</span><br></pre></td></tr></table></figure>
+
+<p>​ 所以换句话说，<strong>根域名服务器都知道所有的顶级域名服务器的域名和 IP 地址</strong>。</p>
+<p>​ <img src="http://ckey.cc/2022/04/10/DNS%E5%9F%9F%E5%90%8D%E6%9F%A5%E8%AF%A2/%E5%9F%9F%E5%90%8D%E7%BA%A7%E5%88%AB.png"></p>
+<p>​ 每一个节点都采用一个域名服务器，这样会使得域名服务器的数量太多，使域名服务器系统的运行效率降低。所以在 DNS 中，采用划分区的方法来解决。**一个服务器所负责管辖(或有权限)的范围叫做区(zone)**。DNS 服务器的管辖范围不是以“域”为单位，而是以“区”为单位。换句话说，上图的树在不同区都有一个拷贝副本，负责一个区的 DNS 查询。</p>
+<h4 id="递归查询与迭代查询"><a href="#递归查询与迭代查询" class="headerlink" title="递归查询与迭代查询"></a>递归查询与迭代查询</h4><p>上文提到了递归查询和迭代查询，下图服务器之间的通信反映了这两种的区别：</p>
+<p><img src="http://ckey.cc/2022/04/10/DNS%E5%9F%9F%E5%90%8D%E6%9F%A5%E8%AF%A2/DNS%E9%80%92%E5%BD%92%E6%9F%A5%E8%AF%A2%E4%B8%8E%E8%BF%AD%E4%BB%A3%E6%9F%A5%E8%AF%A2.png"></p>
+<h3 id="DNS-缓存机制原理"><a href="#DNS-缓存机制原理" class="headerlink" title="DNS 缓存机制原理"></a>DNS 缓存机制原理</h3><p>简单来说，一条域名的 DNS 记录会在本地有两种缓存：<strong>浏览器缓存和操作系统(OS)缓存</strong>。</p>
+<p>​ 在浏览器中访问的时候，会优先访问浏览器缓存。如果未命中则访问 OS 缓存，最后再访问 DNS 服务器(一般是 ISP 提供)，然后 DNS 服务器会递归式的查找域名记录，然后返回。</p>
+<p>DNS 记录会有一个 TTL 值(Time To Live)，单位是秒，意思是这个记录最大有效期是多少。</p>
+<p>​ TTL 这个参数告诉本地 DNS 服务器，域名缓存的最长时间。用阿里云解析来举例，阿里云解析默认的 TTL 是 10 分钟，10 分钟的含义是，本地 DNS 服务器对于域名的缓存时间是 10 分钟，10 分钟后，本地 DNS 服务器就会删除这条记录，删除之后，如果有用户访问这个域名，就要重复一遍上述复杂的流程。</p>
+<p>​ 经过实验，OS 缓存会参考 TTL 值，但是不完全等于 TTL 值，而浏览器 DNS 缓存的时间跟 TTL 值无关，每种浏览器都使用一个固定值。</p>
+<p>​ Windows 访问 DNS 后会把记录保存一段短暂的时间，可通过 ipconfig &#x2F;displaydns 查看 windows 的 DNS 缓存、通过 ipconfig &#x2F;flushdns 来清除。</p>
+
+                      </div>
+                      
+                        <div class="prev-or-next">
+                          <div class="post-foot-next">
+                            
+                          </div>
+                          <div class="post-attach">
+                            
+                              <span class="post-tags">
+                                <i class="iconfont icon-tags" title="标签"></i>
+                                
+                                  <span class="span--tag">
+                                    <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" title="计算机网络">
+                                      <b>#</b>
+                                      计算机网络
+                                    </a>
+                                  </span>
+                                  
+                              </span>
+                              
+                          </div>
+                          <div class="post-foot-prev">
+                            
+                          </div>
+                        </div>
+                        
+                    </div>
+                    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
   </div>
-</div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#DNS"><span class="toc-text">DNS</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E6%9F%A5%E8%AF%A2%E4%B8%8E%E8%BF%AD%E4%BB%A3%E6%9F%A5%E8%AF%A2"><span class="toc-text">递归查询与迭代查询</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DNS-%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6%E5%8E%9F%E7%90%86"><span class="toc-text">DNS 缓存机制原理</span></a></li></ol>
+    </div>
+  </div>
 
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+                      
+                        <div class="comments-container">
+                          
+  <script src='//unpkg.com/@waline/client/dist/Waline.min.js'></script>
+
+  <div id="waline-comments"></div>
+
+  <script>
+    new Waline({
+      el: '#waline-comments',
+      path: location.pathname,
+      serverURL: 'https://ckey-blog-waline-h51d17m3g-c46550.vercel.app/'
+    })
+  </script>
+
+
+
+
+
+
+
+
+                        </div>
+                        
+                  </div>
+                  
         
   <div class="footer">
     <div class="social">
@@ -393,6 +518,24 @@
 
 
         
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + DNS%E5%9F%9F%E5%90%8D%E6%9F%A5%E8%AF%A2 + '&url=' + http%3A%2F%2Fckey.cc%2F2022%2F04%2F10%2FDNS%25E5%259F%259F%25E5%2590%258D%25E6%259F%25A5%25E8%25AF%25A2%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://ckey.cc/2022/04/10/DNS%E5%9F%9F%E5%90%8D%E6%9F%A5%E8%AF%A2/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
   
   
 <script src="/js/shares.js"></script>
