@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="前端,FE,F2E,HTML,CSS,JavaScript,React,Vue,工程化,浏览器" />
+  <meta name="author" content="ckey" />
+  <meta name="description" content="前端 FE F2E HTML CSS JavaScript React Vue 工程化 浏览器" />
+  
+  
+  <title>
+    
+      HTTP2特性 
+      
+      
+      |
+    
+     Ckey&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/css/color-scheme.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+<link rel="stylesheet" href="/css/comments.css">
+
+
+  <!-- jquery3.3.1 -->
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js"></script>
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Ckey</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">主页</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">归档</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">分类</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">标签</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">好文</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">关于</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+  };
+</script>
+
+
+
+    
+
+        
+
+            
+
+                
+                  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+                  <div class="container post-details" id="post-details">
+                    <div class="post-content">
+                      <div class="post-title">
+                        HTTP2特性
+                      </div>
+                      <div class="post-attach">
+                        <span class="post-pubtime">
+                          <i class="iconfont icon-updatetime" title="更新时间"></i>
+                          2022-04-13 21:39:40
+                        </span>
+                        
+                          <span class="post-tags">
+                            <i class="iconfont icon-tags" title="标签"></i>
+                            
+                              <span class="span--tag">
+                                <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" title="计算机网络">
+                                  <b>#</b>
+                                  计算机网络
+                                </a>
+                              </span>
+                              
+                          </span>
+                          
+                      </div>
+                      <div class="markdown-body">
+                        <p>相比 HTTP&#x2F;1.x，HTTP&#x2F;2 在底层传输做了很大的改动和优化：</p>
+<ol>
+<li>HTTP&#x2F;2 采用二进制格式传输数据，而非 HTTP&#x2F;1.x 的文本格式。二进制格式在协议的解析和优化扩展上带来更多的优势和可能。</li>
+<li>HTTP&#x2F;2 对消息头采用 HPACK 进行压缩传输，能够节省消息头占用的网络的流量。而 HTTP&#x2F;1.x 每次请求，都会携带大量冗余头信息，浪费了很多带宽资源。头压缩能够很好的解决该问题。</li>
+<li>多路复用，直白的说就是所有的请求都是通过一个 TCP 连接并发完成。HTTP&#x2F;1.x 虽然通过 <a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=http://en.wikipedia.org/wiki/HTTP_pipelining">pipeline</a> 也能并发请求，但是多个请求之间的响应会被<a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=http://en.wikipedia.org/wiki/Head-of-line_blocking">阻塞</a>的，所以 <a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=http://en.wikipedia.org/wiki/HTTP_pipelining">pipeline</a> 至今也没有被普及应用，而 HTTP&#x2F;2 做到了真正的并发请求。同时，流还支持优先级和流量控制。</li>
+<li>Server Push：服务端能够更快的把资源推送给客户端。例如服务端可以主动把 JS 和 CSS 文件推送给客户端，而不需要客户端解析 HTML 再发送这些请求。当客户端需要的时候，它已经在客户端了。</li>
+</ol>
+<p>转自：<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000002765886">https://segmentfault.com/a/1190000002765886</a></p>
+<h2 id="HTTP-x2F-2-的基石-－-Frame"><a href="#HTTP-x2F-2-的基石-－-Frame" class="headerlink" title="HTTP&#x2F;2 的基石 － Frame"></a>HTTP&#x2F;2 的基石 － Frame</h2><p>Frame 是 HTTP&#x2F;2 二进制格式的基础，基本可以把它理解为它 TCP 里面的数据包一样。HTTP&#x2F;2 之所以能够有如此多的新特性，正是因为底层数据格式的改变。 Frame 的基本格式如下（图中的数字表示所占位数，内容摘自 <a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=https://tools.ietf.org/html/draft-ietf-httpbis-http2-17">http2-draft-17</a>）:</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="code">+-----------------------------------------------+</span></span><br><span class="line"><span class="section">|                 Length (24)                   |</span></span><br><span class="line"><span class="section">+---------------+---------------+---------------+</span></span><br><span class="line"><span class="section">|   Type (8)    |   Flags (8)   |</span></span><br><span class="line"><span class="section">+-+-------------+---------------+-------------------+</span></span><br><span class="line"><span class="section">|R|                 Stream Identifier (31)          |</span></span><br><span class="line"><span class="section">+=+=================================================+</span></span><br><span class="line"><span class="section">|                   Frame Payload (0...)        ...</span></span><br><span class="line"><span class="section">+---------------------------------------------------+</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Length</strong>: 表示 Frame Payload 部分的长度，另外 Frame Header 的长度是固定的 9 字节（Length + Type + Flags + R + Stream Identifier &#x3D; 72 bit）。</li>
+<li><strong>Type</strong>: 区分这个 Frame Payload 存储的数据是属于 HTTP Header 还是 HTTP Body；另外 HTTP&#x2F;2 新定义了一些其他的 Frame Type，例如，这个字段为 0 时，表示 DATA 类型（即 HTTP&#x2F;1.x 里的 Body 部分数据）</li>
+<li><strong>Flags</strong>: 共 8 位， 每位都起标记作用。每种不同的 Frame Type 都有不同的 Frame Flags。例如发送最后一个 DATA 类型的 Frame 时，就会将 Flags 最后一位设置 1（<code>flags &amp;= 0x01</code>），表示 END_STREAM，说明这个 Frame 是流的最后一个数据包。</li>
+<li><strong>R</strong>: 保留位。</li>
+<li><strong>Stream Identifier</strong>: 流 ID，当客户端和服务端建立 TCP 链接时，就会先发送一个 Stream ID &#x3D; 0 的流，用来做些初始化工作。之后客户端和服务端从 1 开始发送请求&#x2F;响应。</li>
+</ul>
+<p>Frame 由 Frame Header 和 Frame Payload 两部分组成。不论是原来的 HTTP Header 还是 HTTP Body，在 HTTP&#x2F;2 中，都将这些数据存储到 Frame Payload，组成一个个 Frame，再发送响应&#x2F;请求。通过 Frame Header 中的 Type 区分这个 Frame 的类型。由此可见语义并没有太大变化，而是数据的格式变成二进制的 Frame。二者的转换和关系如下图:</p>
+<p><img src="https://segmentfault.com/img/remote/1460000004847286" alt="HTTP/1.x 数据转换为 HTTP/2"><br><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=http://chimera.labs.oreilly.com/books/1230000000545/ch12.html%23HTTP2_FRAMING_LAYER">图片引用自这里</a></p>
+<h2 id="为-HTTP-x2F-2-头压缩专门设计的-HPACK"><a href="#为-HTTP-x2F-2-头压缩专门设计的-HPACK" class="headerlink" title="为 HTTP&#x2F;2 头压缩专门设计的 HPACK"></a>为 HTTP&#x2F;2 头压缩专门设计的 <a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=http://http2.github.io/http2-spec/compression.html">HPACK</a></h2><p>如果我们约定将常用的请求比如 <code>GET /index.html</code> 用一个 1 来表示，<code>POST /index.html</code> 用 2 来表示。那么是不是可以节省很多字节？</p>
+<p>为 HTTP&#x2F;2 的专门量身打造的 HPACK 便是类似这样的思路延伸。它使用一份索引表来定义常用的 HTTP Header。把常用的 HTTP Header 存放在表里。请求的时候便只需要发送在表里的索引位置即可。例如 <code>:method=GET</code> 使用索引值 2 表示，<code>:path=/index.html</code> 使用索引值 5 表示（完整的列表参考：<a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=http://http2.github.io/http2-spec/compression.html%23rfc.section.A">HPACK Static Table</a>）。只要给服务端发送一个 Frame，该 Frame 的 Payload 部分存储 <code>0x8285</code>，Frame 的 Type 设置为 Header 类型，便可表示这个 Frame 属于 HTTP Header，请求的内容是：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> /<span class="keyword">index</span>.html</span><br></pre></td></tr></table></figure>
+
+<p>为什么是 <code>0x8285</code>，而不是 <code>0x0205</code>？ 这是因为高位设置为 1 表示这个字节是一个完全索引值（key 和 value 都在索引中）。类似的，通过高位的标志位可以区分出这个字节是属于一个完全索引值，还是仅索引了 key，还是 key 和 value 都没有索引。因为索引表的大小的是有限的，它仅保存了一些常用的 HTTP Header，同时每次请求还可以在表的末尾动态追加新的 HTTP Header 缓存。动态部分称之为 Dynamic Table。Static Table 和 Dynamic Table 在一起组合成了索引表：</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="params">----------</span>  Index Address Space <span class="params">----------</span>&gt;</span><br><span class="line">&lt;-- Static  Table --&gt;  &lt;-- Dynamic Table --&gt;</span><br><span class="line">+<span class="params">---</span>+<span class="params">-----------</span>+<span class="params">---</span>+  +<span class="params">---</span>+<span class="params">-----------</span>+<span class="params">---</span>+</span><br><span class="line">| 1 |    <span class="string">...</span>    | s |  |s+1|    <span class="string">...</span>    |s+k|</span><br><span class="line">+<span class="params">---</span>+<span class="params">-----------</span>+<span class="params">---</span>+  +<span class="params">---</span>+<span class="params">-----------</span>+<span class="params">---</span>+</span><br><span class="line">                       ^                   |</span><br><span class="line">                       |                   V</span><br><span class="line">                 Insertion Point      Dropping Point</span><br></pre></td></tr></table></figure>
+
+<p>HPACK 不仅仅通过索引键值对来降低数据量，同时还会将字符串进行霍夫曼编码来压缩字符串大小。</p>
+<p>以常用的 <code>User-Agent</code> 为例，它在静态表中的索引值是 58，它的值是不存在表中的，因为它的值是多变的。第一次请求的时候它的 key 用 58 表示，表示这是一个 <code>User-Agent</code> ，它的值部分会进行霍夫曼编码（如果编码后的字符串变更长了，则不采用霍夫曼编码）。服务端收到请求后，会将这个 <code>User-Agent</code> 添加到 Dynamic Table 缓存起来，分配一个新的索引值。客户端下一次请求时，假设上次请求<code>User-Agent</code>的在表中的索引位置是 62， 此时只需要发送 <code>0xBE</code>（同样的，高位置 1），便可以代表： <code>User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36</code>。其过程如下图所示:</p>
+<p><img src="https://segmentfault.com/img/remote/1460000004847288" alt="HPACK 原理图"><br><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=http://chimera.labs.oreilly.com/books/1230000000545/ch12.html%23HPACK">图片引用自这里</a></p>
+<p>最终，相同的 Header 只需要发送索引值，新的 Header 会重新加入 Dynamic Table。</p>
+<h2 id="Multipexing-多路复用"><a href="#Multipexing-多路复用" class="headerlink" title="Multipexing 多路复用"></a>Multipexing 多路复用</h2><p><strong>在一个 HTTP 的连接上，多路“HTTP 消息”同时工作</strong>。每个 Frame Header 都有一个 Stream ID 就是被用于实现该特性。每次请求&#x2F;响应使用不同的 Stream ID。就像同一个 TCP 链接上的数据包通过 <code>IP:PORT</code>来区分出数据包去往哪里一样。通过 Stream ID 标识，所有的请求和响应都可以欢快的同时跑在一条 TCP 链接上了。 下图是 http 和 spdy(http2 的模型和 spdy 是类似的) 的并发模型对比：</p>
+<p><img src="https://segmentfault.com/img/remote/1460000004847290" alt="http并发模型"></p>
+<p>当流并发时，就会涉及到流的优先级和依赖。优先级高的流会被优先发送。图片请求的优先级要低于 CSS 和 SCRIPT，这个设计可以确保重要的东西可以被优先加载完。</p>
+<p>HTTP&#x2F;2 设计是基于“二进制帧”进行设计的，这种设计无疑是一种“高超的艺术”，因为它实现了一个目的：<strong>一切可预知，一切可控</strong>。<br>帧是一个数据单元，实现了对消息的封装。下面是 HTTP&#x2F;2 的帧结构：</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="code">+-----------------------------------------------+</span></span><br><span class="line"><span class="section">|                 Length (24)                   |</span></span><br><span class="line"><span class="section">+---------------+---------------+---------------+</span></span><br><span class="line"><span class="section">|   Type (8)    |   Flags (8)   |</span></span><br><span class="line"><span class="section">+-+-------------+---------------+-------------------+</span></span><br><span class="line"><span class="section">|R|                 Stream Identifier (31)          |</span></span><br><span class="line"><span class="section">+=+=================================================+</span></span><br><span class="line"><span class="section">|                   Frame Payload (0...)        ...</span></span><br><span class="line"><span class="section">+---------------------------------------------------+</span></span><br></pre></td></tr></table></figure>
+
+<p>帧的字节中保存了不同的信息，前 9 个字节对于每个帧都是一致的，“服务器”解析 HTTP&#x2F;2 的数据帧时只需要解析这些字节，就能准确的知道整个帧期望多少字节数来进行处理信息。</p>
+<p>HTTP&#x2F;1.1 发送请求消息的文本格式：以换行符分割每一条 key:value 的内容，解析这种数据用不着什么高科技，相反的，解析这种数据往往速度慢且容易出错。“服务端”需要不断的读入字节，直到遇到分隔符（这里指换行符，代码中可能使用&#x2F;n 或者&#x2F;r&#x2F;n 表示），这种解析方式是可行的，并且 HTTP&#x2F;1.1 已经被广泛使用了二十多年，这事已经做过无数次了，问题一直都是存在的：</p>
+<ul>
+<li>一次只能处理一个请求或响应，因为这种以分隔符分割消息的数据，在完成之前不能停止解析。</li>
+<li>解析这种数据无法预知需要多少内存，这会带给“服务端”很大的压力，因为它不知道要把一行要解析的内容读到多大的“缓冲区”中，在保证解析效率和速度的前提下：内存该如何分配？</li>
+</ul>
+<p>多路复用与 keep-alive： keep-alive 给予 HTTP1.x 通过一个 HTTP 连接短时间内<strong>依次</strong>发送多个数据的能力，值得注意的是，多路复用是通过二进制帧使得服务器能知道该次请求会有多少字节，“服务器”解析 HTTP&#x2F;2 的数据帧时只需要解析这些字节，就能准确的知道整个帧期望多少字节数来进行处理信息，而 HTTP1.x 基于文本格式的缺陷，注定了它的“HTTP 消息”只能一次一次的发送。</p>
+<h2 id="Server-Push"><a href="#Server-Push" class="headerlink" title="Server Push"></a>Server Push</h2><p>当服务端需要主动推送某个资源时，便会发送一个 Frame Type 为 PUSH_PROMISE 的 Frame，里面带了 PUSH 需要新建的 Stream ID。意思是告诉客户端：接下来我要用这个 ID 向你发送东西，客户端准备好接着。客户端解析 Frame 时，发现它是一个 PUSH_PROMISE 类型，便会准备接收服务端要推送的流。</p>
+<p><strong>结束语</strong></p>
+<p>本文简化了很多 HTTP&#x2F;2 协议中的具体细节，只描述了 HTTP&#x2F;2 中主要特性实现的基本过程。</p>
+<p>如果你想实现一个支持 HTTP&#x2F;2 的服务器，那么你可以移步 <a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=http://http2.github.io/">HTTP&#x2F;2 官网</a> 做更多了解，它还提供了一份已经实现 HTTP&#x2F;2 的项目列表：<a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=https://github.com/http2/http2-spec/wiki/Implementations">https://github.com/http2/http...</a> 。</p>
+<p>另外，关于 HTTP&#x2F;2 性能如何，可以参考官方小组给出的例子：<a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=https://http2.akamai.com/demo">https://http2.akamai.com/demo</a>。</p>
+<p><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=https://www.upyun.com">UPYUN</a> 在不久的将来也会加入对 HTTP&#x2F;2 协议支持，为用户提供更好更快的云加速服务。</p>
+<blockquote>
+<p>追加：目前又拍云已全网支持 HTTP&#x2F;2 协议及 SPDY3.1 协议。</p>
+</blockquote>
+<p>又拍云 CDN 当前已全平台支持 HTTP&#x2F;2，并已默认开启。又因 HTTP&#x2F;2 是在 HTTPS 协议的基础上实现的，所以只要使用又拍云 HTTPS 加速服务的域名，都可免费享受 HTTP&#x2F;2 服务，无需做任何特殊配置。而开启 HTTPS，只需完成证书申请与管理，无须繁杂流程，轻松实现网站与 Web 应用的 HTTPS 加密部署。</p>
+<h2 id="延伸阅读"><a href="#延伸阅读" class="headerlink" title="延伸阅读"></a>延伸阅读</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=https://tech.upyun.com/article/227/%E4%B8%80%E6%96%87%E8%AF%BB%E6%87%82%20HTTP/2%20%E7%89%B9%E6%80%A7.html">一文读懂 HTTP2 特性</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=https://tech.upyun.com/article/192/HTTPS%E7%B3%BB%E5%88%97%E5%B9%B2%E8%B4%A7%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9AHTTPS%20%E5%8E%9F%E7%90%86%E8%AF%A6%E8%A7%A3.html">HTTPS 原理详解</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=https://www.gitbook.com/book/ye11ow/http2-explained/details">HTTP&#x2F;2 gitbook</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=http://chimera.labs.oreilly.com/books/1230000000545/ch12.html">《High Performance Browser Networking》</a></li>
+</ul>
+
+                      </div>
+                      
+                        <div class="prev-or-next">
+                          <div class="post-foot-next">
+                            
+                              <a href="/2022/04/13/get%E5%92%8Cpost%E5%8C%BA%E5%88%AB/" target="_self">
+                                <i class="iconfont icon-chevronleft"></i>
+                                <span>
+                                  上一页
+                                </span>
+                              </a>
+                              
+                          </div>
+                          <div class="post-attach">
+                            
+                              <span class="post-tags">
+                                <i class="iconfont icon-tags" title="标签"></i>
+                                
+                                  <span class="span--tag">
+                                    <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" title="计算机网络">
+                                      <b>#</b>
+                                      计算机网络
+                                    </a>
+                                  </span>
+                                  
+                              </span>
+                              
+                          </div>
+                          <div class="post-foot-prev">
+                            
+                              <a href="/2022/04/13/HTTP%E9%95%BF%E8%BF%9E%E6%8E%A5%E7%9F%AD%E8%BF%9E%E6%8E%A5/" target="_self">
+                                <span>
+                                  下一页
+                                </span>
+                                <i class="iconfont icon-chevronright"></i>
+                              </a>
+                              
+                          </div>
+                        </div>
+                        
+                    </div>
+                    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP-x2F-2-%E7%9A%84%E5%9F%BA%E7%9F%B3-%EF%BC%8D-Frame"><span class="toc-text">HTTP&#x2F;2 的基石 － Frame</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA-HTTP-x2F-2-%E5%A4%B4%E5%8E%8B%E7%BC%A9%E4%B8%93%E9%97%A8%E8%AE%BE%E8%AE%A1%E7%9A%84-HPACK"><span class="toc-text">为 HTTP&#x2F;2 头压缩专门设计的 HPACK</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Multipexing-%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8"><span class="toc-text">Multipexing 多路复用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Server-Push"><span class="toc-text">Server Push</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%B6%E4%BC%B8%E9%98%85%E8%AF%BB"><span class="toc-text">延伸阅读</span></a></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+                      
+                        <div class="comments-container">
+                          
+  <script src='//unpkg.com/@waline/client/dist/Waline.min.js'></script>
+
+  <div id="waline-comments"></div>
+
+  <script>
+    new Waline({
+      el: '#waline-comments',
+      path: location.pathname,
+      serverURL: 'https://ckey-blog-waline-h51d17m3g-c46550.vercel.app/'
+    })
+  </script>
+
+
+
+
+
+
+
+
+                        </div>
+                        
+                  </div>
+                  
+        
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/c46550">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+          <li>
+            <a title="email" href="/email">
+              <i class="iconfont icon-envelope"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/c46550">
+              Copyright © 2022 Ckey
+            </a>
+            
+        </div>
+        
+  </div>
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + HTTP2%E7%89%B9%E6%80%A7 + '&url=' + http%3A%2F%2Fckey.cc%2F2022%2F04%2F13%2FHTTP2%25E7%2589%25B9%25E6%2580%25A7%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://ckey.cc/2022/04/13/HTTP2%E7%89%B9%E6%80%A7/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

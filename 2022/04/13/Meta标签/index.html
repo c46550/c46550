@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="前端,FE,F2E,HTML,CSS,JavaScript,React,Vue,工程化,浏览器" />
+  <meta name="author" content="ckey" />
+  <meta name="description" content="前端 FE F2E HTML CSS JavaScript React Vue 工程化 浏览器" />
+  
+  
+  <title>
+    
+      Meta标签 
+      
+      
+      |
+    
+     Ckey&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/css/color-scheme.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+<link rel="stylesheet" href="/css/comments.css">
+
+
+  <!-- jquery3.3.1 -->
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js"></script>
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Ckey</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">主页</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">归档</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">分类</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">标签</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">好文</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">关于</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+  };
+</script>
+
+
+
+    
+
+        
+
+            
+
+                
+                  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+                  <div class="container post-details" id="post-details">
+                    <div class="post-content">
+                      <div class="post-title">
+                        Meta标签
+                      </div>
+                      <div class="post-attach">
+                        <span class="post-pubtime">
+                          <i class="iconfont icon-updatetime" title="更新时间"></i>
+                          2022-04-13 22:26:55
+                        </span>
+                        
+                          <span class="post-tags">
+                            <i class="iconfont icon-tags" title="标签"></i>
+                            
+                              <span class="span--tag">
+                                <a href="/tags/HTML/" title="HTML">
+                                  <b>#</b>
+                                  HTML
+                                </a>
+                              </span>
+                              
+                          </span>
+                          
+                      </div>
+                      <div class="markdown-body">
+                        <p>meta 常用于定义页面的说明，关键字，最后修改日期，和其它的元数据。这些元数据将服务于浏览器（如何布局或重载页面），搜索引擎和其它网络服务。</p>
+<h3 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h3><p>meta 标签共有两个属性，分别是 http-equiv 属性和 name 属性。</p>
+<h4 id="1-name-属性"><a href="#1-name-属性" class="headerlink" title="1. name 属性"></a>1. name 属性</h4><p>name 属性主要用于描述网页，比如网页的关键词，叙述等。与之对应的属性值为 content，content 中的内容是对 name 填入类型的具体描述，便于搜索引擎抓取。meta 标签中 name 属性语法格式是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name=&quot;参数&quot; content=&quot;具体的描述&quot;&gt;。</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<p>其中 name 属性共有以下几种参数。(A-C 为常用属性)</p>
+<h3 id="A-keywords-关键字"><a href="#A-keywords-关键字" class="headerlink" title="A. keywords(关键字)"></a>A. keywords(关键字)</h3><p>说明：用于告诉搜索引擎，你网页的关键字。举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name=&quot;keywords&quot; content=&quot;Lxxyx,博客，文科生，前端&quot;&gt;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<h3 id="B-description-网站内容的描述"><a href="#B-description-网站内容的描述" class="headerlink" title="B. description(网站内容的描述)"></a>B. description(网站内容的描述)</h3><p>说明：用于告诉搜索引擎，你网站的主要内容。举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name=&quot;description&quot; content=&quot;文科生，热爱前端与编程。目前大二，这是我的前端博客&quot;&gt;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<h3 id="C-viewport-移动端的窗口"><a href="#C-viewport-移动端的窗口" class="headerlink" title="C. viewport(移动端的窗口)"></a>C. viewport(移动端的窗口)</h3><p>这个属性常用于设计移动端网页。在用 bootstrap,AmazeUI 等框架时候都有用过 viewport。</p>
+<p>举例（常用范例）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<h3 id="robots-定义搜索引擎爬虫的索引方式"><a href="#robots-定义搜索引擎爬虫的索引方式" class="headerlink" title="robots(定义搜索引擎爬虫的索引方式)"></a>robots(定义搜索引擎爬虫的索引方式)</h3><p>说明：robots 用来告诉爬虫哪些页面需要索引，哪些页面不需要索引。content 的参数有 all,none,index,noindex,follow,nofollow。默认是 all。 举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name=&quot;robots&quot; content=&quot;none&quot;&gt;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<p>具体参数如下：</p>
+<p>1.none : 搜索引擎将忽略此网页，等价于 noindex，nofollow。 2.noindex : 搜索引擎不索引此网页。 3.nofollow: 搜索引擎不继续通过此网页的链接索引搜索其它的网页。 4.all : 搜索引擎将索引此网页与继续通过此网页的链接索引，等价于 index，follow。 5.index : 搜索引擎索引此网页。 6.follow : 搜索引擎继续通过此网页的链接索引搜索其它的网页。</p>
+<h3 id="E-author-作者"><a href="#E-author-作者" class="headerlink" title="E. author(作者)"></a>E. author(作者)</h3><p>说明：用于标注网页作者举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name=&quot;author&quot; content=&quot;Lxxyx,80530@qq.com&quot;&gt;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<h3 id="F-generator-网页制作软件"><a href="#F-generator-网页制作软件" class="headerlink" title="F. generator(网页制作软件)"></a>F. generator(网页制作软件)</h3><p>说明：用于标明网页是什么软件做的举例: (不知道能不能这样写)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name=&quot;generator&quot; content=&quot;Sublime Text3&quot;&gt;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<h3 id="G-copyright-版权"><a href="#G-copyright-版权" class="headerlink" title="G. copyright(版权)"></a>G. copyright(版权)</h3><p>说明：用于标注版权信息举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name=&quot;copyright&quot; content=&quot;Lxxyx&quot;&gt; //代表该网站为Lxxyx个人版权所有。</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<h3 id="H-revisit-after-搜索引擎爬虫重访时间"><a href="#H-revisit-after-搜索引擎爬虫重访时间" class="headerlink" title="H.revisit-after(搜索引擎爬虫重访时间)"></a>H.revisit-after(搜索引擎爬虫重访时间)</h3><p>说明：如果页面不是经常更新，为了减轻搜索引擎爬虫对服务器带来的压力，可以设置一个爬虫的重访时间。如果重访时间过短，爬虫将按它们定义的默认时间来访问。举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name=&quot;revisit-after&quot; content=&quot;7 days&quot; &gt;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<h3 id="I-renderer-双核浏览器渲染方式"><a href="#I-renderer-双核浏览器渲染方式" class="headerlink" title="I. renderer(双核浏览器渲染方式)"></a>I. renderer(双核浏览器渲染方式)</h3><p>说明：renderer 是为双核浏览器准备的，用于指定双核浏览器默认以何种方式渲染页面。比如说 360 浏览器。举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name=&quot;renderer&quot; content=&quot;webkit&quot;&gt; //默认webkit内核</span><br><span class="line">&lt;meta name=&quot;renderer&quot; content=&quot;ie-comp&quot;&gt; //默认IE兼容模式</span><br><span class="line">&lt;meta name=&quot;renderer&quot; content=&quot;ie-stand&quot;&gt; //默认IE标准模式</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-http-equiv-属性"><a href="#2-http-equiv-属性" class="headerlink" title="2. http-equiv 属性"></a>2. http-equiv 属性</h3><p>属性语法格式是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta http-equiv=&quot;参数&quot; content=&quot;具体的描述&quot;&gt;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<h4 id="A-content-Type-设定网页字符集-推荐使用-HTML5-的方式"><a href="#A-content-Type-设定网页字符集-推荐使用-HTML5-的方式" class="headerlink" title="A. content-Type(设定网页字符集)(推荐使用 HTML5 的方式)"></a>A. content-Type(设定网页字符集)(推荐使用 HTML5 的方式)</h4><p>说明：用于设定网页字符集，便于浏览器解析与渲染页面举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta http-equiv=&quot;content-Type&quot; content=&quot;text/html;charset=utf-8&quot;&gt;  //旧的HTML，不推荐</span><br><span class="line"></span><br><span class="line">&lt;meta charset=&quot;utf-8&quot;&gt; //HTML5设定网页字符集的方式，推荐使用UTF-8</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<h4 id="B-X-UA-Compatible-浏览器采取何种版本渲染当前页面"><a href="#B-X-UA-Compatible-浏览器采取何种版本渲染当前页面" class="headerlink" title="B.X-UA-Compatible(浏览器采取何种版本渲染当前页面)"></a>B.X-UA-Compatible(浏览器采取何种版本渲染当前页面)</h4><p>说明：用于告知浏览器以何种版本来渲染页面。（一般都设置为最新模式，在各大框架中这个设置也很常见。）举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge,chrome=1&quot;/&gt; //指定IE和Chrome使用最新版本渲染当前页面</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<h4 id="C-cache-control-指定请求和响应遵循的缓存机制"><a href="#C-cache-control-指定请求和响应遵循的缓存机制" class="headerlink" title="C. cache-control(指定请求和响应遵循的缓存机制)"></a>C. cache-control(指定请求和响应遵循的缓存机制)</h4><p><strong>用法 1.</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta http-equiv=&quot;cache-control&quot; content=&quot;no-cache&quot;&gt;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<p>共有以下几种用法：</p>
+<ul>
+<li>no-cache: 先发送请求，与服务器确认该资源是否被更改，如果未被更改，则使用缓存。</li>
+<li>no-store: 不允许缓存，每次都要去服务器上，下载完整的响应。（安全措施）</li>
+<li>public : 缓存所有响应，但并非必须。因为 max-age 也可以做到相同效果</li>
+<li>private : 只为单个用户缓存，因此不允许任何中继进行缓存。（比如说 CDN 就不允许缓存 private 的响应）</li>
+<li>maxage : 表示当前请求开始，该响应在多久内能被缓存和重用，而不去服务器重新请求。例如：max-age&#x3D;60 表示响应可以再缓存和重用 60 秒</li>
+</ul>
+<p><strong>用法 2.(禁止百度自动转码)</strong></p>
+<p>说明：用于禁止当前页面在移动端浏览时，被百度自动转码。虽然百度的本意是好的，但是转码效果很多时候却不尽人意。所以可以在 head 中加入例子中的那句话，就可以避免百度自动转码了。举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta http-equiv=&quot;Cache-Control&quot; content=&quot;no-siteapp&quot; /&gt;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<h4 id="D-expires-网页到期时间"><a href="#D-expires-网页到期时间" class="headerlink" title="D. expires(网页到期时间)"></a>D. expires(网页到期时间)</h4><p>说明:用于设定网页的到期时间，过期后网页必须到服务器上重新传输。举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta http-equiv=&quot;expires&quot; content=&quot;Sunday 26 October 2016 01:00 GMT&quot; /&gt;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<h4 id="F-refresh-自动刷新并指向某页面"><a href="#F-refresh-自动刷新并指向某页面" class="headerlink" title="F.refresh(自动刷新并指向某页面)"></a>F.refresh(自动刷新并指向某页面)</h4><p>说明：网页将在设定的时间内，自动刷新并调向设定的网址。举例:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta http-equiv=&quot;refresh&quot; content=&quot;2；URL=http://www.lxxyx.win/&quot;&gt; //意思是2秒后跳转向我的博客</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<h4 id="F-Set-Cookie-cookie-设定"><a href="#F-Set-Cookie-cookie-设定" class="headerlink" title="F. Set-Cookie(cookie 设定)"></a>F. Set-Cookie(cookie 设定)</h4><p>说明：如果网页过期。那么这个网页存在本地的 cookies 也会被自动删除。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta http-equiv=&quot;Set-Cookie&quot; content=&quot;name, date&quot;&gt; //格式</span><br><span class="line"></span><br><span class="line">&lt;meta http-equiv=&quot;Set-Cookie&quot; content=&quot;User=Lxxyx; path=/; expires=Sunday, 10-Jan-16 10:00:00 GMT&quot;&gt; //具体范例</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<p>链接：<a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903971308617736">https://juejin.cn/post/6844903971308617736</a><br>来源：掘金</p>
+
+                      </div>
+                      
+                        <div class="prev-or-next">
+                          <div class="post-foot-next">
+                            
+                              <a href="/2022/04/13/IE%E7%9B%92%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%A0%87%E5%87%86%E7%9B%92%E6%A8%A1%E5%9E%8B/" target="_self">
+                                <i class="iconfont icon-chevronleft"></i>
+                                <span>
+                                  上一页
+                                </span>
+                              </a>
+                              
+                          </div>
+                          <div class="post-attach">
+                            
+                              <span class="post-tags">
+                                <i class="iconfont icon-tags" title="标签"></i>
+                                
+                                  <span class="span--tag">
+                                    <a href="/tags/HTML/" title="HTML">
+                                      <b>#</b>
+                                      HTML
+                                    </a>
+                                  </span>
+                                  
+                              </span>
+                              
+                          </div>
+                          <div class="post-foot-prev">
+                            
+                              <a href="/2022/04/13/%E8%A1%8C%E5%86%85%E5%85%83%E7%B4%A0Padding/" target="_self">
+                                <span>
+                                  下一页
+                                </span>
+                                <i class="iconfont icon-chevronright"></i>
+                              </a>
+                              
+                          </div>
+                        </div>
+                        
+                    </div>
+                    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%84%E6%88%90"><span class="toc-text">组成</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-name-%E5%B1%9E%E6%80%A7"><span class="toc-text">1. name 属性</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#A-keywords-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-text">A. keywords(关键字)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#B-description-%E7%BD%91%E7%AB%99%E5%86%85%E5%AE%B9%E7%9A%84%E6%8F%8F%E8%BF%B0"><span class="toc-text">B. description(网站内容的描述)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-viewport-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E7%9A%84%E7%AA%97%E5%8F%A3"><span class="toc-text">C. viewport(移动端的窗口)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#robots-%E5%AE%9A%E4%B9%89%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E%E7%88%AC%E8%99%AB%E7%9A%84%E7%B4%A2%E5%BC%95%E6%96%B9%E5%BC%8F"><span class="toc-text">robots(定义搜索引擎爬虫的索引方式)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#E-author-%E4%BD%9C%E8%80%85"><span class="toc-text">E. author(作者)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#F-generator-%E7%BD%91%E9%A1%B5%E5%88%B6%E4%BD%9C%E8%BD%AF%E4%BB%B6"><span class="toc-text">F. generator(网页制作软件)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#G-copyright-%E7%89%88%E6%9D%83"><span class="toc-text">G. copyright(版权)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#H-revisit-after-%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E%E7%88%AC%E8%99%AB%E9%87%8D%E8%AE%BF%E6%97%B6%E9%97%B4"><span class="toc-text">H.revisit-after(搜索引擎爬虫重访时间)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#I-renderer-%E5%8F%8C%E6%A0%B8%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E6%96%B9%E5%BC%8F"><span class="toc-text">I. renderer(双核浏览器渲染方式)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-http-equiv-%E5%B1%9E%E6%80%A7"><span class="toc-text">2. http-equiv 属性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#A-content-Type-%E8%AE%BE%E5%AE%9A%E7%BD%91%E9%A1%B5%E5%AD%97%E7%AC%A6%E9%9B%86-%E6%8E%A8%E8%8D%90%E4%BD%BF%E7%94%A8-HTML5-%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="toc-text">A. content-Type(设定网页字符集)(推荐使用 HTML5 的方式)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#B-X-UA-Compatible-%E6%B5%8F%E8%A7%88%E5%99%A8%E9%87%87%E5%8F%96%E4%BD%95%E7%A7%8D%E7%89%88%E6%9C%AC%E6%B8%B2%E6%9F%93%E5%BD%93%E5%89%8D%E9%A1%B5%E9%9D%A2"><span class="toc-text">B.X-UA-Compatible(浏览器采取何种版本渲染当前页面)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-cache-control-%E6%8C%87%E5%AE%9A%E8%AF%B7%E6%B1%82%E5%92%8C%E5%93%8D%E5%BA%94%E9%81%B5%E5%BE%AA%E7%9A%84%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6"><span class="toc-text">C. cache-control(指定请求和响应遵循的缓存机制)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#D-expires-%E7%BD%91%E9%A1%B5%E5%88%B0%E6%9C%9F%E6%97%B6%E9%97%B4"><span class="toc-text">D. expires(网页到期时间)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#F-refresh-%E8%87%AA%E5%8A%A8%E5%88%B7%E6%96%B0%E5%B9%B6%E6%8C%87%E5%90%91%E6%9F%90%E9%A1%B5%E9%9D%A2"><span class="toc-text">F.refresh(自动刷新并指向某页面)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#F-Set-Cookie-cookie-%E8%AE%BE%E5%AE%9A"><span class="toc-text">F. Set-Cookie(cookie 设定)</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+                      
+                        <div class="comments-container">
+                          
+  <script src='//unpkg.com/@waline/client/dist/Waline.min.js'></script>
+
+  <div id="waline-comments"></div>
+
+  <script>
+    new Waline({
+      el: '#waline-comments',
+      path: location.pathname,
+      serverURL: 'https://ckey-blog-waline-h51d17m3g-c46550.vercel.app/'
+    })
+  </script>
+
+
+
+
+
+
+
+
+                        </div>
+                        
+                  </div>
+                  
+        
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/c46550">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+          <li>
+            <a title="email" href="/email">
+              <i class="iconfont icon-envelope"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/c46550">
+              Copyright © 2022 Ckey
+            </a>
+            
+        </div>
+        
+  </div>
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Meta%E6%A0%87%E7%AD%BE + '&url=' + http%3A%2F%2Fckey.cc%2F2022%2F04%2F13%2FMeta%25E6%25A0%2587%25E7%25AD%25BE%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://ckey.cc/2022/04/13/Meta%E6%A0%87%E7%AD%BE/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

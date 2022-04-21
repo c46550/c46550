@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="前端,FE,F2E,HTML,CSS,JavaScript,React,Vue,工程化,浏览器" />
+  <meta name="author" content="ckey" />
+  <meta name="description" content="前端 FE F2E HTML CSS JavaScript React Vue 工程化 浏览器" />
+  
+  
+  <title>
+    
+      IntersectionObserver API 
+      
+      
+      |
+    
+     Ckey&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/css/color-scheme.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+<link rel="stylesheet" href="/css/comments.css">
+
+
+  <!-- jquery3.3.1 -->
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js"></script>
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Ckey</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">主页</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">归档</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">分类</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">标签</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">好文</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">关于</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+  };
+</script>
+
+
+
+    
+
+        
+
+            
+
+                
+                  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+                  <div class="container post-details" id="post-details">
+                    <div class="post-content">
+                      <div class="post-title">
+                        IntersectionObserver API
+                      </div>
+                      <div class="post-attach">
+                        <span class="post-pubtime">
+                          <i class="iconfont icon-updatetime" title="更新时间"></i>
+                          2022-04-14 01:58:45
+                        </span>
+                        
+                          <span class="post-tags">
+                            <i class="iconfont icon-tags" title="标签"></i>
+                            
+                              <span class="span--tag">
+                                <a href="/tags/JavaScript/" title="JavaScript">
+                                  <b>#</b>
+                                  JavaScript
+                                </a>
+                              </span>
+                              
+                          </span>
+                          
+                      </div>
+                      <div class="markdown-body">
+                        <h2 id="IntersectionObserver"><a href="#IntersectionObserver" class="headerlink" title="IntersectionObserver"></a>IntersectionObserver</h2><p>这是个还在草案中的 API，不过大部分浏览器均已实现（除了 IE）。先看下 MDN 中的介绍：</p>
+<blockquote>
+<p>IntersectionObserver 接口提供了一种异步观察目标元素与祖先元素或顶级文档<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Glossary/viewport">viewport</a>的交集中的变化的方法。祖先元素与视窗 viewport 被称为<strong>根(root)。</strong></p>
+</blockquote>
+<p><img src="http://ckey.cc/2022/04/14/IntersectionObserver/16b8d8fdcedfbbf1.png" alt="目标元素与视窗"></p>
+<p>不知大家有没有发现随着网页发展，对<strong>检测某个（些）元素是否出现在可视窗</strong>相关的需求越来越多了？比如：</p>
+<ul>
+<li>当页面滚动时，懒加载图片或其他内容。</li>
+<li>实现“可无限滚动”网站，也就是当用户滚动网页时直接加载更多内容，无需翻页。</li>
+<li>对某些元素进行埋点曝光</li>
+<li>滚动到相应区域来执行相应动画或其他任务。</li>
+</ul>
+<p>一直以来，检测元素的可视状态或者两个元素的相对可视状态都不是件容易事，大部分解决办法并不完全可靠，实现方式很丑陋，也极易拖慢整个网站的性能。</p>
+<p><strong>IntersectionObserver 正因此而生</strong></p>
+<h3 id="API-解读："><a href="#API-解读：" class="headerlink" title="API 解读："></a>API 解读：</h3><h4 id="1-用法"><a href="#1-用法" class="headerlink" title="1.用法"></a>1.用法</h4><p>是以<code>new</code>的形式声明一个对象，接收两个参数<code>callback</code>和<code>options</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> io = <span class="keyword">new</span> <span class="title class_">IntersectionObserver</span>(callback, options);</span><br><span class="line"></span><br><span class="line">io.<span class="title function_">observe</span>(<span class="variable constant_">DOM</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> options = &#123;</span><br><span class="line">    <span class="attr">root</span>: <span class="literal">null</span>,</span><br><span class="line">    <span class="attr">rootMargin</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="attr">thresholds</span>: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> io = <span class="keyword">new</span> <span class="title class_">IntersectionObserver</span>(<span class="function">(<span class="params">entries</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(entries);</span><br><span class="line">    <span class="comment">// Do something</span></span><br><span class="line">&#125;, options);</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-callback"><a href="#2-callback" class="headerlink" title="2.callback"></a>2.callback</h4><p>callback 是添加监听后，当监听目标发生滚动变化时触发的回调函数。接收一个参数 entries，即 IntersectionObserverEntry 实例。描述了目标元素与 root 的交叉状态。具体参数如下：</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>boundingClientRect</td>
+<td>返回包含目标元素的边界信息，返回结果与 element.getBoundingClientRect() 相同</td>
+</tr>
+<tr>
+<td><strong>intersectionRatio</strong></td>
+<td>返回目标元素出现在可视区的比例</td>
+</tr>
+<tr>
+<td>intersectionRect</td>
+<td>用来描述 root 和目标元素的相交区域</td>
+</tr>
+<tr>
+<td><strong>isIntersecting</strong></td>
+<td>返回一个布尔值，下列两种操作均会触发 callback：1. 如果目标元素出现在 root 可视区，返回 true。2. 如果从 root 可视区消失，返回 false</td>
+</tr>
+<tr>
+<td>rootBounds</td>
+<td>用来描述交叉区域观察者(intersection observer)中的根.</td>
+</tr>
+<tr>
+<td>target</td>
+<td>目标元素：与根出现相交区域改变的元素 (Element)</td>
+</tr>
+<tr>
+<td>time</td>
+<td>返回一个记录从 IntersectionObserver 的时间原点到交叉被触发的时间的时间戳</td>
+</tr>
+</tbody></table>
+<p>表格中加粗的两个属性是比较常用的判断条件：<strong>isIntersecting</strong>和<strong>intersectionRatio</strong></p>
+<p><img src="http://ckey.cc/2022/04/14/IntersectionObserver/16b8d8fdd043b259.png" alt="IntersectionObserverEntry打印的值"></p>
+<h4 id="3-options"><a href="#3-options" class="headerlink" title="3.options"></a>3.options</h4><p>options 是一个对象，用来配置参数，也可以不填。共有三个属性，具体如下：</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>root</td>
+<td>所监听对象的具体祖先元素。如果未传入值或值为<code>null</code>，则默认使用顶级文档的视窗(一般为 html)。</td>
+</tr>
+<tr>
+<td>rootMargin</td>
+<td>计算交叉时添加到<strong>根(root)**边界盒<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Glossary/bounding_box">bounding box</a>的矩形偏移量， 可以有效的缩小或扩大根的判定范围从而满足计算需要。所有的偏移量均可用**像素</strong>(<code>px</code>)或<strong>百分比</strong>(<code>%</code>)来表达, 默认值为”0px 0px 0px 0px”。</td>
+</tr>
+<tr>
+<td>threshold</td>
+<td>一个包含阈值的列表, 按升序排列, 列表中的每个阈值都是监听对象的交叉区域与边界区域的比率。当监听对象的任何阈值被越过时，都会触发 callback。默认值为 0。</td>
+</tr>
+</tbody></table>
+<h4 id="4-方法"><a href="#4-方法" class="headerlink" title="4.方法"></a>4.方法</h4><p>介绍了这么多配置项及参数，差点忘了最重要的，IntersectionObserver 有哪些方法？ 如果要监听某些元素，则必须要对该元素执行一下 observe</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>observe()</td>
+<td>开始监听一个目标元素</td>
+</tr>
+<tr>
+<td>unobserve()</td>
+<td>停止监听特定目标元素</td>
+</tr>
+<tr>
+<td>takeRecords()</td>
+<td>返回所有观察目标的 IntersectionObserverEntry 对象数组</td>
+</tr>
+<tr>
+<td>disconnect()</td>
+<td>使 IntersectionObserver 对象停止全部监听工作</td>
+</tr>
+</tbody></table>
+<h3 id="应用："><a href="#应用：" class="headerlink" title="应用："></a>应用：</h3><h4 id="1-图片懒加载"><a href="#1-图片懒加载" class="headerlink" title="1.图片懒加载"></a>1.图片懒加载</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> imgList = [...<span class="variable language_">document</span>.<span class="title function_">querySelectorAll</span>(<span class="string">&#x27;img&#x27;</span>)];</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> io = <span class="keyword">new</span> <span class="title class_">IntersectionObserver</span>(</span><br><span class="line">    <span class="function">(<span class="params">entries</span>) =&gt;</span> &#123;</span><br><span class="line">        entries.<span class="title function_">forEach</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="comment">// isIntersecting是一个Boolean值，判断目标元素当前是否可见</span></span><br><span class="line">            <span class="keyword">if</span> (item.<span class="property">isIntersecting</span>) &#123;</span><br><span class="line">                item.<span class="property">target</span>.<span class="property">src</span> = item.<span class="property">target</span>.<span class="property">dataset</span>.<span class="property">src</span>;</span><br><span class="line">                <span class="comment">// 图片加载后即停止监听该元素</span></span><br><span class="line">                io.<span class="title function_">unobserve</span>(item.<span class="property">target</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">root</span>: <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;.root&#x27;</span>),</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// observe遍历监听所有img节点</span></span><br><span class="line">imgList.<span class="title function_">forEach</span>(<span class="function">(<span class="params">img</span>) =&gt;</span> io.<span class="title function_">observe</span>(img));</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-埋点曝光"><a href="#2-埋点曝光" class="headerlink" title="2.埋点曝光"></a>2.埋点曝光</h4><p>假如有个需求，对一个页面中的特定元素，只有在其完全显示在可视区内时进行埋点曝光。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> boxList = [...<span class="variable language_">document</span>.<span class="title function_">querySelectorAll</span>(<span class="string">&#x27;.box&#x27;</span>)];</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> io = <span class="keyword">new</span> <span class="title class_">IntersectionObserver</span>(</span><br><span class="line">    <span class="function">(<span class="params">entries</span>) =&gt;</span> &#123;</span><br><span class="line">        entries.<span class="title function_">forEach</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="comment">// intersectionRatio === 1说明该元素完全暴露出来，符合业务需求</span></span><br><span class="line">            <span class="keyword">if</span> (item.<span class="property">intersectionRatio</span> === <span class="number">1</span>) &#123;</span><br><span class="line">                <span class="comment">// 。。。 埋点曝光代码</span></span><br><span class="line">                io.<span class="title function_">unobserve</span>(item.<span class="property">target</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">root</span>: <span class="literal">null</span>,</span><br><span class="line">        <span class="attr">threshold</span>: <span class="number">1</span>, <span class="comment">// 阀值设为1，当只有比例达到1时才触发回调函数</span></span><br><span class="line">    &#125;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// observe遍历监听所有box节点</span></span><br><span class="line">boxList.<span class="title function_">forEach</span>(<span class="function">(<span class="params">box</span>) =&gt;</span> io.<span class="title function_">observe</span>(box));</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-滚动动画"><a href="#3-滚动动画" class="headerlink" title="3.滚动动画"></a>3.滚动动画</h4><p>用上面的例子随便写了一个，太丑勿喷</p>
+<p><img src="http://ckey.cc/2022/04/14/IntersectionObserver/16b8d8fdd0bba525.gif" alt="IntersectionObserver.gif"></p>
+<p><strong>总之，这是一个相当方便好用的 API！</strong></p>
+<p>参考链接 🔗</p>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver">MDN: IntersectionObserver</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserverEntry">MDN: IntersectionObserverEntry</a></p>
+<p>作者：Va007<br>链接：<a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903874302574599">https://juejin.cn/post/6844903874302574599</a><br>来源：掘金<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+<p>2019 年 06 月 25 日</p>
+
+                      </div>
+                      
+                        <div class="prev-or-next">
+                          <div class="post-foot-next">
+                            
+                              <a href="/2022/04/14/getBoundingClientRect/" target="_self">
+                                <i class="iconfont icon-chevronleft"></i>
+                                <span>
+                                  上一页
+                                </span>
+                              </a>
+                              
+                          </div>
+                          <div class="post-attach">
+                            
+                              <span class="post-tags">
+                                <i class="iconfont icon-tags" title="标签"></i>
+                                
+                                  <span class="span--tag">
+                                    <a href="/tags/JavaScript/" title="JavaScript">
+                                      <b>#</b>
+                                      JavaScript
+                                    </a>
+                                  </span>
+                                  
+                              </span>
+                              
+                          </div>
+                          <div class="post-foot-prev">
+                            
+                              <a href="/2022/04/14/window%E4%B8%8EWindow/" target="_self">
+                                <span>
+                                  下一页
+                                </span>
+                                <i class="iconfont icon-chevronright"></i>
+                              </a>
+                              
+                          </div>
+                        </div>
+                        
+                    </div>
+                    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#IntersectionObserver"><span class="toc-text">IntersectionObserver</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#API-%E8%A7%A3%E8%AF%BB%EF%BC%9A"><span class="toc-text">API 解读：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E7%94%A8%E6%B3%95"><span class="toc-text">1.用法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-callback"><span class="toc-text">2.callback</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-options"><span class="toc-text">3.options</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E6%96%B9%E6%B3%95"><span class="toc-text">4.方法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%EF%BC%9A"><span class="toc-text">应用：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD"><span class="toc-text">1.图片懒加载</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%9F%8B%E7%82%B9%E6%9B%9D%E5%85%89"><span class="toc-text">2.埋点曝光</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E6%BB%9A%E5%8A%A8%E5%8A%A8%E7%94%BB"><span class="toc-text">3.滚动动画</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+                      
+                        <div class="comments-container">
+                          
+  <script src='//unpkg.com/@waline/client/dist/Waline.min.js'></script>
+
+  <div id="waline-comments"></div>
+
+  <script>
+    new Waline({
+      el: '#waline-comments',
+      path: location.pathname,
+      serverURL: 'https://ckey-blog-waline-h51d17m3g-c46550.vercel.app/'
+    })
+  </script>
+
+
+
+
+
+
+
+
+                        </div>
+                        
+                  </div>
+                  
+        
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/c46550">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+          <li>
+            <a title="email" href="/email">
+              <i class="iconfont icon-envelope"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/c46550">
+              Copyright © 2022 Ckey
+            </a>
+            
+        </div>
+        
+  </div>
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + IntersectionObserver%20API + '&url=' + http%3A%2F%2Fckey.cc%2F2022%2F04%2F14%2FIntersectionObserver%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://ckey.cc/2022/04/14/IntersectionObserver/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>
